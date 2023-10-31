@@ -22,7 +22,7 @@ To open the Buffed options menu, use the following chat command:
 
 There is a glitch where you have to enter it in twice... I don't know why.
 
-[Buffed Menu](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/menu.png)
+![Buffed Menu](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/menu.png)
 
 In the Buffed options menu, you can:
 
@@ -35,7 +35,7 @@ In the Buffed options menu, you can:
 
 Buffed tracks your workout progress when you're resting in the game. It calculates the calories burned based on your estimated calories burned per hour and the duration of your resting.
 
-[Message](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/message.png)
+![Message](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/message.png)
 
 ### Workout Results
 
@@ -47,7 +47,7 @@ When you finish resting, Buffed displays a popup with your workout results, incl
 - Pistol Squats
 - Seconds Planking
 
-[Workout](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/workout.png)
+![Workout](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/workout.png)
 
 ## Configuration
 
