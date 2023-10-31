@@ -1,0 +1,7 @@
+## Title: Buffed
+## Version: 1.0
+## Author: Clempton
+## Notes: An exercise tracker addon for WoW Classic
+## Interface: 11200
+
+Buffed.lua
