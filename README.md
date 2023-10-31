@@ -1,6 +1,7 @@
 ![buffed](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/buffed.png)
 # Buffed
 ![buffed](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/buffed.png)
+
 Buffed is a World of Warcraft addon that helps you track your workout progress and calories burned while resting in the game.
 
 ## Features
