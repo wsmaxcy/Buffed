@@ -57,8 +57,8 @@ You can configure Buffed options, including weight, height, gender, and calories
 
 ## Feedback and Bug Reports
 
-If you encounter any issues or have suggestions for improving the Buffed addon, please submit them in the [Issues](https://github.com/your-repo-url/issues) section of this GitHub repository. Also feel free to message me on Turtle-Wow at either Clempton or Clumpton.
+If you encounter any issues or have suggestions for improving the Buffed addon, please submit them in the [Issues](https://github.com/Buffed/issues) section of this GitHub repository. Also feel free to message me on Turtle-Wow at either Clempton or Clumpton.
 
 ## License
 
-This addon is released under the MIT License. See the [LICENSE](LICENSE) file for details.
+This addon is released under the MIT License. See the [LICENSE](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt) file for details.
