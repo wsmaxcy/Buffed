@@ -15,6 +15,7 @@
 </table>
 
 
+
 Buffed is a World of Warcraft addon that helps you track your workout progress and calories burned while resting in the game.
 
 ## Features
