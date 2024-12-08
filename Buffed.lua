@@ -112,7 +112,7 @@ eventFrame:SetScript("OnEvent", function(self, event)
             -- Not all zero, update and show the popup
             UpdateBuffedRestingAlertText()
             StaticPopup_Show("BUFFED_RESTING_ALERT")
-q        end
+        end
         
     else
             -- Leaving rested area
