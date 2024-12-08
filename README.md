@@ -1,16 +1,19 @@
 <table align="center" style="width: 100%;">
     <tr>
         <td align="right" style="width: 25%;">
-            <img src="https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/buffed.png" alt="buffed" width="150"/>
+            <img src="https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/buffed.png" 
+                 alt="buffed" width="150" style="transform: scaleX(-1);"/>
         </td>
         <td align="center" style="width: 50%;">
             <h1 style="text-align: center;">Buffed</h1>
         </td>
         <td align="left" style="width: 25%;">
-            <img src="https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/buffed.png" alt="buffed" width="150"/>
+            <img src="https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/buffed.png" 
+                 alt="buffed" width="150"/>
         </td>
     </tr>
 </table>
+
 
 Buffed is a World of Warcraft addon that helps you track your workout progress and calories burned while resting in the game.
 
