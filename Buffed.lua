@@ -381,10 +381,10 @@ local function CreateBuffedFrame()
             local sex = (isMale and "Male") or (isFemale and "Female") or "Not Selected"
             local hourBurnValue = calBox:GetText()
 
-            BDB.height = height
-            BDB.weight = weight
-            BDB.sex = sex
-            BDB.hourBurn = hourBurnValue
+            BuffDB.height = height
+            BuffDB.weight = weight
+            BuffDB.sex = sex
+            BuffDB.hourBurn = hourBurnValue
             
             
         
@@ -418,13 +418,13 @@ local function CreateBuffedFrame()
         end)
 
         -- After heightBox, weightBox, calBox, maleCheckbox, femaleCheckbox are created:
-        heightBox:SetText(BDB.height)
-        weightBox:SetText(BDB.weight)
+        heightBox:SetText(BuffDB.height)
+        weightBox:SetText(BuffDB.weight)
             
-        if BDB.sex == "Male" then
+        if BuffDB.sex == "Male" then
             maleCheckbox:SetChecked(true)
             femaleCheckbox:SetChecked(false)
-        elseif BDB.sex == "Female" then
+        elseif BuffDB.sex == "Female" then
             femaleCheckbox:SetChecked(true)
             maleCheckbox:SetChecked(false)
         else
@@ -432,7 +432,7 @@ local function CreateBuffedFrame()
             femaleCheckbox:SetChecked(false)
         end
         
-        calBox:SetText(BDB.hourBurn)
+        calBox:SetText(BuffDB.hourBurn)
         
         PerformCalculation(heightBox, weightBox, maleCheckbox, femaleCheckbox, calBox)
 
@@ -446,11 +446,11 @@ end
 --
 
 
--- A function that calculates hourBurn based on BDB values (no UI needed):
+-- A function that calculates hourBurn based on BuffDB values (no UI needed):
 local function CalculateHourBurnFromDB()
-    local weight = tonumber(BDB.weight)
-    local height = tonumber(BDB.height)
-    local sex = BDB.sex
+    local weight = tonumber(BuffDB.weight)
+    local height = tonumber(BuffDB.height)
+    local sex = BuffDB.sex
     
 
     if not weight or not height or sex == "Not Selected" then
@@ -468,7 +468,7 @@ local function CalculateHourBurnFromDB()
     end
 
     local newHourBurn = math.floor(BMR/24)
-    BDB.hourBurn = tostring(newHourBurn) -- Store as string if you prefer
+    BuffDB.hourBurn = tostring(newHourBurn) -- Store as string if you prefer
     lastRestingEnd = GetTime()
 end
 
@@ -477,15 +477,18 @@ local loadFrame = CreateFrame("Frame")
 loadFrame:RegisterEvent("VARIABLES_LOADED")
 loadFrame:SetScript("OnEvent", function()    
     if event == "VARIABLES_LOADED" then
-        if BDB.height == nil then BDB.height = "0" end
-        if BDB.weight == nil then BDB.weight = "0" end
-        if BDB.sex == nil then BDB.sex = "Not Selected" end
-        if BDB.hourBurn == nil then BDB.hourBurn = "0" end
+        if BuffDB.height == nil then BuffDB.height = "0" end
+        if BuffDB.weight == nil then BuffDB.weight = "0" end
+        if BuffDB.sex == nil then BuffDB.sex = "Male" end
+        if BuffDB.hourBurn == nil then BuffDB.hourBurn = "0" end
         
         CalculateHourBurnFromDB()
     end
 end)
 
+if not BuffDB then
+    BuffDB = {}
+end
 
 --
 
