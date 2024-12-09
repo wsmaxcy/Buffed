@@ -1,4 +1,4 @@
--- Buffed Addon by You
+-- Buffed Addon by Clempton
 -- No saved variables; user inputs height/weight each session.
 
 local ADDON_NAME = "Buffed"
