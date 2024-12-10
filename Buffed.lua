@@ -26,62 +26,138 @@ local pistolsquats = 0
 local pullups = 0
 
 
--- Update resting alert text
-function UpdateBuffedRestingAlertText()
-    local textFormat = 
-        "|cFF00FFFF[Buffed]|r\n" ..
-        "|cFFFFFFFF--- Workout Results ---|r\n\n" ..
-        "|cffff0000• Push-Ups:|r %d\n" ..
-        "|cffff0000• Pull-Ups:|r %d\n" ..
-        "|cffff0000• Sit-Ups:|r %d\n" ..
-        "|cffff0000• Pistol Squats:|r %d\n" ..
-        "|cffff0000• Planking (sec):|r %d"
+local function CreateBuffedRestingAlertFrame()
+
+    if BuffedRestingFrame == nil then
+
+        -- Main Frame
+        BuffedRestingFrame = CreateFrame("Frame", "BuffedRestingFrame", UIParent)
+        BuffedRestingFrame:SetWidth(280)
+        BuffedRestingFrame:SetHeight(235)
+        BuffedRestingFrame:SetPoint("CENTER", UIParent, "CENTER", 0, 400)    
+        BuffedRestingFrame:SetBackdrop({
+            bgFile = "Interface\\DialogFrame\\UI-DialogBox-Background",
+            edgeFile = "Interface\\DialogFrame\\UI-DialogBox-Border",
+            tile = true, tileSize = 16, edgeSize = 16,
+            insets = { left = 4, right = 4, top = 4, bottom = 4 }
+        })
+        BuffedRestingFrame:SetBackdropColor(0, 0, 0, 0.8)
+        BuffedRestingFrame:SetBackdropBorderColor(0.5, 0.5, 0.5, 1)
+
+        table.insert(UISpecialFrames, "BuffedRestingFrame") -- ESC closes the frame
+
+        local detailTitle = BuffedRestingFrame:CreateFontString(nil, "HIGH", "GameFontNormal")
+        detailTitle:SetText("|cFFFFFFFFWorkout Details")
+        detailTitle:SetPoint("TOPLEFT", 20, -35)
+
+
+        -- Header Frame with Texture
+        local titleFrame = CreateFrame("Frame", nil, BuffedRestingFrame)
+        titleFrame:SetPoint("TOP", BuffedRestingFrame, "TOP", 0, 12)
+        titleFrame:SetWidth(256)
+        titleFrame:SetHeight(64)
+
+        local titleTex = titleFrame:CreateTexture(nil, "OVERLAY")
+        titleTex:SetTexture("Interface\\DialogFrame\\UI-DialogBox-Header")
+        titleTex:SetAllPoints()
+
+        local title = titleFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        title:SetText("|cFF00FFFF[Buffed]|r Workout")
+        title:SetPoint("TOP", 0, -14)
+
+        -- Section Frame for Exercises
+        local sectionFrame = CreateFrame("Frame", nil, BuffedRestingFrame)
+        sectionFrame:SetPoint("TOPLEFT", BuffedRestingFrame, "TOPLEFT", 15, -50)
+        sectionFrame:SetPoint("BOTTOMRIGHT", BuffedRestingFrame, "BOTTOMRIGHT", -15, 50)
+        sectionFrame:SetBackdrop({
+            bgFile = "Interface\\Tooltips\\UI-Tooltip-Background",
+            edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",
+            tile = true, tileSize = 8, edgeSize = 16,
+            insets = { left = 3, right = 3, top = 3, bottom = 3 }
+        })
+        sectionFrame:SetBackdropColor(.2,.2,.2,1)
+        sectionFrame:SetBackdropBorderColor(.5,.5,.5,1)
+
+        -- Exercise List
+        local exerciseTexts = {}
+        local exercises = {
+            { name = "Push-Ups:", key = "pushups" },
+            { name = "Pull-Ups:", key = "pullups" },
+            { name = "Sit-Ups:", key = "situps" },
+            { name = "Pistol Squats:", key = "pistolsquats" },
+            { name = "Planking (sec):", key = "planks" }
+        }
+
+        local xNameOffset = 50     -- X position for exercise names
+        local xCountOffset = 170   -- X position for aligned numbers (adjust as needed)
+        local yOffset = -20
+        for _, exercise in ipairs(exercises) do
+            -- Create FontString for the exercise name
+            local nameText = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+            nameText:SetPoint("TOPLEFT", xNameOffset, yOffset)
+            nameText:SetText(string.format("|cffff0000• %s|r", exercise.name))
         
-    StaticPopupDialogs["BUFFED_RESTING_ALERT"].text = string.format(textFormat, pushups, pullups, situps, pistolsquats, planks)
+            -- Create FontString for the aligned count
+            local countText = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+            countText:SetPoint("TOPLEFT", xCountOffset, yOffset)
+            countText:SetText("|cFFFFFFFF0|r")
+        
+            -- Store the count text to update later
+            exerciseTexts[exercise.key] = countText
+        
+            -- Move to the next line
+            yOffset = yOffset - 20
+        end
+
+        -- Buttons: "I Did It!", "Skip", "Close"
+        local button1 = CreateFrame("Button", "BuffedDidItButton", BuffedRestingFrame, "UIPanelButtonTemplate")
+        button1:SetWidth(80)
+        button1:SetHeight(24)
+        button1:SetPoint("BOTTOMLEFT", 20, 15)
+        button1:SetText("I Did It!")
+        button1:SetScript("OnClick", function()
+            accumulatingTime = false
+            lastRestingEnd = GetTime()
+            DEFAULT_CHAT_FRAME:AddMessage("|cFF00FFFF[Buffed]|r Great job! Keep it up!")
+            BuffedRestingFrame:Hide()
+        end)
+
+        local button2 = CreateFrame("Button", "BuffedSkipButton", BuffedRestingFrame, "UIPanelButtonTemplate")
+        button2:SetWidth(80)
+        button2:SetHeight(24)
+        button2:SetPoint("BOTTOM", 0, 15)
+        button2:SetText("I Will..")
+        button2:SetScript("OnClick", function()
+            accumulatingTime = true
+            DEFAULT_CHAT_FRAME:AddMessage(string.format("|cFF00FFFF[Buffed] |cFFFFFFFFStill %d seconds since last rested|r", lastDurationSinceLastRest))
+            BuffedRestingFrame:Hide()
+        end)
+
+        local closeButton  = CreateFrame("Button", nil, BuffedRestingFrame, "UIPanelButtonTemplate")
+        closeButton:SetWidth(80)
+        closeButton:SetHeight(24)
+        closeButton:SetPoint("BOTTOMRIGHT", -20, 15)
+        closeButton:SetText("I Won't")
+        closeButton:SetScript("OnClick", function()
+            SendChatMessage("Hey everybody, I'm a big LAZY BONES!", "YELL")
+            BuffedRestingFrame:Hide()
+        end)
+
+        -- Function to Update Exercise Results
+        BuffedRestingFrame.UpdateResults = function()
+            exerciseTexts["pushups"]:SetText(string.format("|cFFFFFFFF%d|r", pushups))
+            exerciseTexts["pullups"]:SetText(string.format("|cFFFFFFFF%d|r", pullups))
+            exerciseTexts["situps"]:SetText(string.format("|cFFFFFFFF%d|r", situps))
+            exerciseTexts["pistolsquats"]:SetText(string.format("|cFFFFFFFF%d|r", pistolsquats))
+            exerciseTexts["planks"]:SetText(string.format("|cFFFFFFFF%d|r", planks))
+        end
+    end
+
+    -- Ensure UpdateResults is called and the frame is shown
+    BuffedRestingFrame:UpdateResults()
+    BuffedRestingFrame:Show()
 end
 
-
-StaticPopupDialogs["BUFFED_RESTING_ALERT"] = {
-    text = "",
-    button1 = "I Did It!",
-    button2 = "I Didn't Do It...",
-    -- On "I Did It!"
-    OnAccept = function()
-        accumulatingTime = false
-        lastRestingEnd = GetTime()
-        DEFAULT_CHAT_FRAME:AddMessage("|cFF00FFFF[Buffed]|r Great job! Keep it up!")
-    end
-,
-    OnCancel = function()
-        -- User didn't do it, show the next popup to decide what to do.
-        StaticPopup_Show("I_DIDNT_DO_IT")
-    end,
-    timeout = 0,
-    whileDead = true,
-    hideOnEscape = true,
-    preferredIndex = 3,
-}
-
-StaticPopupDialogs["I_DIDNT_DO_IT"] = {
-    text = "Do you want to keep the timer going for next time and accumulate the workout?",
-    button1 = "Yes!",
-    button2 = "I'm Lazy",
-    OnAccept = function()
-        accumulatingTime = true
-        DEFAULT_CHAT_FRAME:AddMessage(string.format("|cFF00FFFF[Buffed] |cFFFFFFFFStill %d seconds since last rested|r", lastDurationSinceLastRest))
-        -- Do NOT reset lastRestingEnd here. Just leave it as is.
-    end,
-    OnCancel = function()
-        accumulatingTime = false
-        SendChatMessage("Hey everybody, I'm a big LAZY BONES!", "YELL")
-        lastRestingEnd = GetTime()
-        DEFAULT_CHAT_FRAME:AddMessage("|cFF00FFFF[Buffed] |cFFFFFFFFNo worries! You can do it next time!|r")
-    end,
-    timeout = 0,
-    whileDead = true,
-    hideOnEscape = true,
-    preferredIndex = 3,
-}
 
 
 -- Event handling frame for resting
@@ -110,8 +186,8 @@ eventFrame:SetScript("OnEvent", function(self, event)
             return
         else
             -- Not all zero, update and show the popup
-            UpdateBuffedRestingAlertText()
-            StaticPopup_Show("BUFFED_RESTING_ALERT")
+            CreateBuffedRestingAlertFrame()
+
         end
         
     else
@@ -181,7 +257,7 @@ local function CreateBuffedFrame()
         titleTex:SetAllPoints()
 
         local title = titleFrame:CreateFontString(nil, "HIGH", "GameFontNormal")
-        title:SetText("Buffed Options")
+        title:SetText("|cFF00FFFF[Buffed]|r Options")
         title:SetPoint("TOP", 0, -14)
 
         local detailTitle = BuffedFrame:CreateFontString(nil, "HIGH", "GameFontNormal")
@@ -346,6 +422,7 @@ local function CreateBuffedFrame()
                 self:ClearFocus()
                 MoveFocus(self, true)
             elseif key == "ESCAPE" then
+                print("Fart")
                 BuffedFrame:Hide()
             end
         end
@@ -471,6 +548,7 @@ local function CalculateHourBurnFromDB()
     BuffDB.hourBurn = tostring(newHourBurn) -- Store as string if you prefer
     lastRestingEnd = GetTime()
 end
+
 
 
 local loadFrame = CreateFrame("Frame")
