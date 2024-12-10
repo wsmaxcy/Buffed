@@ -139,6 +139,8 @@ local function CreateBuffedRestingAlertFrame()
         closeButton:SetPoint("BOTTOMRIGHT", -20, 15)
         closeButton:SetText("I Won't")
         closeButton:SetScript("OnClick", function()
+            accumulatingTime = false
+            lastRestingEnd = GetTime()
             SendChatMessage("Hey everybody, I'm a big LAZY BONES!", "YELL")
             BuffedRestingFrame:Hide()
         end)
