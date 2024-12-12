@@ -25,11 +25,27 @@ local planks = 0
 local pistolsquats = 0
 local pullups = 0
 
+local session_exercises = {
+    s_pushups = 0,
+    s_situps = 0,
+    s_planks = 0,
+    s_pistolsquats = 0,
+    s_pullups = 0
+}
+
+local total_exercises = {
+    t_pushups = 0,
+    t_situps = 0,
+    t_planks = 0,
+    t_pistolsquats = 0,
+    t_pullups = 0
+}
+
 
 local function CreateBuffedRestingAlertFrame()
 
-    if BuffedRestingFrame == nil then
 
+    if BuffedRestingFrame == nil then
         -- Main Frame
         BuffedRestingFrame = CreateFrame("Frame", "BuffedRestingFrame", UIParent)
         BuffedRestingFrame:SetWidth(280)
@@ -49,7 +65,6 @@ local function CreateBuffedRestingAlertFrame()
         local detailTitle = BuffedRestingFrame:CreateFontString(nil, "HIGH", "GameFontNormal")
         detailTitle:SetText("|cFFFFFFFFWorkout Details")
         detailTitle:SetPoint("TOPLEFT", 20, -35)
-
 
         -- Header Frame with Texture
         local titleFrame = CreateFrame("Frame", nil, BuffedRestingFrame)
@@ -88,26 +103,65 @@ local function CreateBuffedRestingAlertFrame()
             { name = "Planking (sec):", key = "planks" }
         }
 
-        local xNameOffset = 50     -- X position for exercise names
-        local xCountOffset = 170   -- X position for aligned numbers (adjust as needed)
-        local yOffset = -20
+        local xNameOffset = 10     -- X position for exercise names
+        local xCountOffset = 115   -- X position for aligned numbers (adjust as needed)
+        local xCount2Offset = 165  -- X position for aligned numbers (adjust as needed)
+        local xCount3Offset = 215  -- X position for aligned numbers (adjust as needed)
+        local yOffset = -30
+
+        -- Create Exercise Titles and Count Texts
+        local exerciseTitle = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        exerciseTitle:SetText("Exercise")
+        exerciseTitle:SetPoint("TOPLEFT", xNameOffset + 5, yOffset + 20)
+
+        local countTitle = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        countTitle:SetText("Now")
+        countTitle:SetPoint("TOPLEFT", xCountOffset - 7, yOffset + 20)
+
+        local countTitle2 = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        countTitle2:SetText("Session")
+        countTitle2:SetPoint("TOPLEFT", xCount2Offset - 17, yOffset + 20)
+
+        local countTitle3 = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
+        countTitle3:SetText("Total")
+        countTitle3:SetPoint("TOPLEFT", xCount3Offset - 8, yOffset + 20)
+
+
+        
         for _, exercise in ipairs(exercises) do
             -- Create FontString for the exercise name
             local nameText = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
             nameText:SetPoint("TOPLEFT", xNameOffset, yOffset)
             nameText:SetText(string.format("|cffff0000• %s|r", exercise.name))
         
-            -- Create FontString for the aligned count
+            -- "Now" Count FontString
             local countText = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
             countText:SetPoint("TOPLEFT", xCountOffset, yOffset)
             countText:SetText("|cFFFFFFFF0|r")
         
-            -- Store the count text to update later
+            -- "Session" Count FontString
+            local countText2 = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+            countText2:SetPoint("TOPLEFT", xCount2Offset, yOffset)
+            countText2:SetText(string.format("|cFFFFFFFF%d|r", session_exercises["s_" .. exercise.key] or 0))
+        
+            -- "Total" Count FontString
+            local countText3 = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
+            countText3:SetPoint("TOPLEFT", xCount3Offset, yOffset)
+            countText3:SetText(string.format("|cFFFFFFFF%d|r", total_exercises["t_" .. exercise.key] or 0))
+        
+            -- Store references in exerciseTexts
             exerciseTexts[exercise.key] = countText
+        
+            if not exerciseTexts.session then exerciseTexts.session = {} end
+            if not exerciseTexts.total then exerciseTexts.total = {} end
+        
+            exerciseTexts.session[exercise.key] = countText2
+            exerciseTexts.total[exercise.key] = countText3
         
             -- Move to the next line
             yOffset = yOffset - 20
         end
+        
 
         -- Buttons: "I Did It!", "Skip", "Close"
         local button1 = CreateFrame("Button", "BuffedDidItButton", BuffedRestingFrame, "UIPanelButtonTemplate")
@@ -118,6 +172,44 @@ local function CreateBuffedRestingAlertFrame()
         button1:SetScript("OnClick", function()
             accumulatingTime = false
             lastRestingEnd = GetTime()
+
+            -- Add to session totals
+            session_exercises.s_pushups = session_exercises.s_pushups + pushups
+            session_exercises.s_situps = session_exercises.s_situps + situps
+            session_exercises.s_planks = session_exercises.s_planks + planks
+            session_exercises.s_pistolsquats = session_exercises.s_pistolsquats + pistolsquats
+            session_exercises.s_pullups = session_exercises.s_pullups + pullups
+
+            -- Add to total totals
+            total_exercises.t_pushups = BuffDB.t_pushups + pushups
+            total_exercises.t_situps = BuffDB.t_situps + situps
+            total_exercises.t_planks = BuffDB.t_planks + planks
+            total_exercises.t_pistolsquats = BuffDB.t_pistolsquats + pistolsquats
+            total_exercises.t_pullups = BuffDB.t_pullups + pullups
+
+            -- Update BuffDB totals
+            BuffDB.t_pushups = BuffDB.t_pushups + pushups
+            BuffDB.t_situps = BuffDB.t_situps + situps
+            BuffDB.t_planks = BuffDB.t_planks + planks
+            BuffDB.t_pistolsquats = BuffDB.t_pistolsquats + pistolsquats
+            BuffDB.t_pullups = BuffDB.t_pullups + pullups
+
+            
+            -- Update the UI
+            exerciseTexts.session["pushups"]:SetText(string.format("|cFFFFFFFF%d|r", session_exercises.s_pushups))
+            exerciseTexts.session["situps"]:SetText(string.format("|cFFFFFFFF%d|r", session_exercises.s_situps))
+            exerciseTexts.session["planks"]:SetText(string.format("|cFFFFFFFF%d|r", session_exercises.s_planks))
+            exerciseTexts.session["pistolsquats"]:SetText(string.format("|cFFFFFFFF%d|r", session_exercises.s_pistolsquats))
+            exerciseTexts.session["pullups"]:SetText(string.format("|cFFFFFFFF%d|r", session_exercises.s_pullups))
+
+            exerciseTexts.total["pushups"]:SetText(string.format("|cFFFFFFFF%d|r", total_exercises.t_pushups))
+            exerciseTexts.total["situps"]:SetText(string.format("|cFFFFFFFF%d|r", total_exercises.t_situps))
+            exerciseTexts.total["planks"]:SetText(string.format("|cFFFFFFFF%d|r", total_exercises.t_planks))
+            exerciseTexts.total["pistolsquats"]:SetText(string.format("|cFFFFFFFF%d|r", total_exercises.t_pistolsquats))
+            exerciseTexts.total["pullups"]:SetText(string.format("|cFFFFFFFF%d|r", total_exercises.t_pullups))
+            
+            BuffedRestingFrame:UpdateResults()
+
             DEFAULT_CHAT_FRAME:AddMessage("|cFF00FFFF[Buffed]|r Great job! Keep it up!")
             BuffedRestingFrame:Hide()
         end)
@@ -159,8 +251,6 @@ local function CreateBuffedRestingAlertFrame()
     BuffedRestingFrame:UpdateResults()
     BuffedRestingFrame:Show()
 end
-
-
 
 -- Event handling frame for resting
 local eventFrame = CreateFrame("Frame")
@@ -552,7 +642,6 @@ local function CalculateHourBurnFromDB()
 end
 
 
-
 local loadFrame = CreateFrame("Frame")
 loadFrame:RegisterEvent("VARIABLES_LOADED")
 loadFrame:SetScript("OnEvent", function()    
@@ -561,6 +650,12 @@ loadFrame:SetScript("OnEvent", function()
         if BuffDB.weight == nil then BuffDB.weight = "0" end
         if BuffDB.sex == nil then BuffDB.sex = "Male" end
         if BuffDB.hourBurn == nil then BuffDB.hourBurn = "0" end
+        if BuffDB.t_pushups == nil then BuffDB.t_pushups = "0" end
+        if BuffDB.t_situps == nil then BuffDB.t_situps = "0" end
+        if BuffDB.t_planks == nil then BuffDB.t_planks = "0" end
+        if BuffDB.t_pistolsquats == nil then BuffDB.t_pistolsquats = "0" end
+        if BuffDB.t_pullups == nil then BuffDB.t_pullups = "0" end
+
         
         CalculateHourBurnFromDB()
     end
@@ -570,11 +665,38 @@ if not BuffDB then
     BuffDB = {}
 end
 
---
 
 -- Function to handle the "/buffed" command
-local function BuffedMenuCommandHandler()
-    CreateBuffedFrame()
+local function BuffedMenuCommandHandler(msg)
+    if msg and string.lower(msg) == "clear" then
+        -- Reset BuffDB total values
+        BuffDB.t_pushups = 0
+        BuffDB.t_pullups = 0
+        BuffDB.t_situps = 0
+        BuffDB.t_pistolsquats = 0
+        BuffDB.t_planks = 0
+        
+        -- Reset local total variables (optional)
+        total_exercises.t_pushups = 0
+        total_exercises.t_pullups = 0
+        total_exercises.t_situps = 0
+        total_exercises.t_pistolsquats = 0
+        total_exercises.t_planks = 0
+
+        -- Reset session variables as well
+        session_exercises.s_pushups = 0
+        session_exercises.s_pullups = 0
+        session_exercises.s_situps = 0
+        session_exercises.s_pistolsquats = 0
+        session_exercises.s_planks = 0
+
+        -- Print confirmation
+        DEFAULT_CHAT_FRAME:AddMessage("|cFF00FFFF[Buffed]|r Total and session counts reset to 0!")
+
+    else
+        -- Open the Buffed options frame
+        CreateBuffedFrame()
+    end
 end
 
 -- Register the slash command
