@@ -70,6 +70,8 @@ The popup provides:
 - **Session**: Cumulative exercises during your current gaming session.  
 - **Total**: All-time tracked exercises.  
 
+![Buffed Menu](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/workout.png)
+
 ---
 
 ## Commands
