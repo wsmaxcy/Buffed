@@ -15,7 +15,9 @@
 </table>
 
 
-Buffed is a World of Warcraft addon that transforms your in-game downtime into an opportunity to track your fitness goals. This addon provides real-time workout tracking and calorie calculations based on your physical details, helping you stay "buffed" in and out of the game.
+**Buffed** is a World of Warcraft addon that transforms your in-game downtime into an opportunity to track your fitness goals. This addon provides real-time workout tracking and calorie calculations based on your physical details, helping you stay "buffed" both in and out of the game.
+
+---
 
 ## Features
 
@@ -26,8 +28,9 @@ Buffed is a World of Warcraft addon that transforms your in-game downtime into a
   - Sit-ups
   - Pistol squats
   - Planking (seconds)
-- **Real-Time Feedback**: Displays your workout results and calories burned when you finish resting in-game.
-- **Customizable Options**: Input your physical details and instantly calculate your calorie burn rate.
+- **Session and Total Tracking**: Displays exercise stats for your current session and total progress.
+- **Customizable Options**: Input your weight, height, and gender to personalize your calorie burn calculations.
+- **Real-Time Workout Alerts**: When you finish resting in-game, Buffed pops up to display your workout plan.
 
 ## Installation
 
@@ -52,33 +55,47 @@ In the Buffed options menu, you can:
 
 ![Buffed Menu](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/menu.png)
 
-## Workout Tracking
+## How It Works
 
-Buffed automatically tracks your workout progress whenever you are resting in-game. It calculates the calories burned based on your inputs and displays a detailed breakdown of your workout when you leave the resting state.
+- **Resting Detection**: Buffed automatically activates when you rest (e.g., at inns or cities).  
+- **Workout Plan**: It calculates exercises like push-ups, pull-ups, sit-ups, and planking based on how long you've been resting.  
+- **Pop-Up Alert**: Upon leaving the resting state, a pop-up appears with your personalized workout.  
 
-![Workout Summary](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/workout.png)
+---
 
-### Workout Results
+### Workout Results Display
 
-Upon completing your rest, Buffed will show a popup with your workout summary, including:
-- Number of push-ups, pull-ups, sit-ups, and pistol squats completed.
-- Total seconds spent planking.
+The popup provides:  
+- **Now**: Exercises calculated based on the latest rest period.  
+- **Session**: Cumulative exercises during your current gaming session.  
+- **Total**: All-time tracked exercises.  
 
-![Workout Results](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/message.png)
+---
 
-## Configuration
+## Commands
 
-You can configure Buffed to suit your preferences by:
-- Entering your weight and height.
-- Selecting your gender.
-- Adjusting your calorie burn rate.
+- **`/buffed`**: Opens the main configuration menu.  
+- **`/buffed clear`**: Resets session and total counts for all exercises.  
 
-Changes are saved for your current session.
+---
+
+## Known Issues
+
+- **Total Exercises Not Showing on First Load**:  
+  The "Total" column in the Buffed frame may not populate the first time the frame opens in a session. Closing and reopening the frame resolves the issue.  
+
+---
 
 ## Feedback and Bug Reports
 
-Have ideas to improve Buffed or found a bug? Let us know! Submit issues and suggestions via the [Issues](https://github.com/wsmaxcy/Buffed/issues) section. You can also message me in-game on **Turtle-WoW** as **Clempton**, **Clumpton**, or **Fruiter**.
+If you have ideas for improving Buffed or encounter bugs, let us know!  
+
+- Submit feedback via the [Issues](https://github.com/wsmaxcy/Buffed/issues) section on GitHub.  
+- Alternatively, message me in-game on **Turtle-WoW** as **Clempton**, **Clumpton**, or **Fruiter**.  
+
+---
 
 ## License
 
-Buffed is open source and released under the [MIT License](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt). Feel free to use, modify, and distribute it as you wish.
+Buffed is open source and released under the [MIT License](https://github.com/git/git-scm.com/blob/main/MIT-LICENSE.txt).  
+Feel free to use, modify, and distribute it as you wish.
