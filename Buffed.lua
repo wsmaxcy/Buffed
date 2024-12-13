@@ -657,10 +657,8 @@ end
 
 
 local function BuffedMenuCommandHandler(msg)
-    DEFAULT_CHAT_FRAME:AddMessage("|cFF00FFFF[Buffed]|r Debug: Command received - " .. (msg or "nil"))
 
     if msg and string.lower(msg) == "show" then
-        DEFAULT_CHAT_FRAME:AddMessage("|cFF00FFFF[Buffed]|r Showing the workout details frame!")
         if not BuffedRestingFrame then
 
             CreateBuffedRestingAlertFrame()
