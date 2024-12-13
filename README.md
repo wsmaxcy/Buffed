@@ -68,9 +68,16 @@ In the Buffed options menu, you can:
 The popup provides:  
 - **Now**: Exercises calculated based on the latest rest period.  
 - **Session**: Cumulative exercises during your current gaming session.  
-- **Total**: All-time tracked exercises.  
 
-![Buffed Menu](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/workout.png)
+![Buffed Workout](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/workout.png)
+
+---
+
+### Shame
+
+If you choose to press the **I Won't** button, be prepared to suffer from shame.
+
+![Buffed Shame](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/shame.png)
 
 ---
 
@@ -78,13 +85,6 @@ The popup provides:
 
 - **`/buffed`**: Opens the main configuration menu.  
 - **`/buffed clear`**: Resets session and total counts for all exercises.  
-
----
-
-## Known Issues
-
-- **Total Exercises Not Showing on First Load**:  
-  The "Total" column in the Buffed frame may not populate the first time the frame opens in a session. Closing and reopening the frame resolves the issue.  
 
 ---
 
