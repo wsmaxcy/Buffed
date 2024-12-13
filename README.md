@@ -75,7 +75,7 @@ The popup provides:
 
 ---
 
-### Shame
+## Shame
 
 If you choose to press the **I Won't** button, be prepared to suffer from shame.
 
