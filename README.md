@@ -2,14 +2,14 @@
     <tr>
         <td align="right" style="width: 25%;">
             <img src="https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/buffed.png" 
-                 alt="buffed" width="100" style="transform: scaleX(-1);"/>
+                 alt="buffed" width="60" style="transform: scaleX(-1);"/>
         </td>
         <td align="center" style="width: 50%;">
             <h1 style="text-align: center;">Buffed</h1>
         </td>
         <td align="left" style="width: 25%;">
             <img src="https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/buffed.png" 
-                 alt="buffed" width="100"/>
+                 alt="buffed" width="60"/>
         </td>
     </tr>
 </table>
