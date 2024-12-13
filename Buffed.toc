@@ -2,7 +2,7 @@
 ## Title: |cFF00FFFFBuffed
 ## Notes: A WoW Classic addon to encourage fitness breaks
 ## Author: Clempton
-## Version: 1.2.4
+## Version: 1.2.6
 ## SavedVariables: BuffDB
 
 Buffed.lua

@@ -2,14 +2,14 @@
     <tr>
         <td align="right" style="width: 25%;">
             <img src="https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/buffed.png" 
-                 alt="buffed" width="150" style="transform: scaleX(-1);"/>
+                 alt="buffed" width="100" style="transform: scaleX(-1);"/>
         </td>
         <td align="center" style="width: 50%;">
             <h1 style="text-align: center;">Buffed</h1>
         </td>
         <td align="left" style="width: 25%;">
             <img src="https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/buffed.png" 
-                 alt="buffed" width="150"/>
+                 alt="buffed" width="100"/>
         </td>
     </tr>
 </table>
@@ -71,6 +71,7 @@ The popup provides:
 
 ![Buffed Workout](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/workout.png)
 
+**Completed** text changes color depending on how much **WORK** you do in your session. Can you make it to Legnedary?
 ---
 
 ### Shame
@@ -85,6 +86,7 @@ If you choose to press the **I Won't** button, be prepared to suffer from shame.
 
 - **`/buffed`**: Opens the main configuration menu.  
 - **`/buffed clear`**: Resets session and total counts for all exercises.  
+- **`/buffed show`**: Shows the last workout loaded.
 
 ---
 

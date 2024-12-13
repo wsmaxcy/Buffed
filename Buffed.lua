@@ -25,6 +25,9 @@ local planks = 0
 local pistolsquats = 0
 local pullups = 0
 
+local color = "|cff9d9d9d"
+local count = 0
+
 local session_exercises = {
     s_pushups = 0,
     s_situps = 0,
@@ -33,6 +36,23 @@ local session_exercises = {
     s_pullups = 0
 }
 
+local exerciseTexts = {}
+        local exercises = {
+            { name = "Push-Ups:", key = "pushups" },
+            { name = "Pull-Ups:", key = "pullups" },
+            { name = "Sit-Ups:", key = "situps" },
+            { name = "Pistol Squats:", key = "pistolsquats" },
+            { name = "Planking (sec):", key = "planks" }
+        }
+
+local function UpdateExerciseUI()
+    -- Update all exercise session text dynamically
+    exerciseTexts.session["pushups"]:SetText("|cff9d9d9d0|r")
+    exerciseTexts.session["situps"]:SetText("|cff9d9d9d0|r")
+    exerciseTexts.session["planks"]:SetText("|cff9d9d9d0|r")
+    exerciseTexts.session["pistolsquats"]:SetText("|cff9d9d9d0|r")
+    exerciseTexts.session["pullups"]:SetText("|cff9d9d9d0|r")
+end
 
 local function CreateBuffedRestingAlertFrame()
 
@@ -85,15 +105,7 @@ local function CreateBuffedRestingAlertFrame()
         sectionFrame:SetBackdropColor(.2,.2,.2,1)
         sectionFrame:SetBackdropBorderColor(.5,.5,.5,1)
 
-        -- Exercise List
-        local exerciseTexts = {}
-        local exercises = {
-            { name = "Push-Ups:", key = "pushups" },
-            { name = "Pull-Ups:", key = "pullups" },
-            { name = "Sit-Ups:", key = "situps" },
-            { name = "Pistol Squats:", key = "pistolsquats" },
-            { name = "Planking (sec):", key = "planks" }
-        }
+        
 
         local xNameOffset = 10     -- X position for exercise names
         local xCountOffset = 138   -- X position for aligned numbers (adjust as needed)
@@ -106,15 +118,34 @@ local function CreateBuffedRestingAlertFrame()
         exerciseTitle:SetPoint("TOPLEFT", xNameOffset + 5, yOffset + 20)
 
         local countTitle = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        countTitle:SetText("Now")
+        countTitle:SetText("To Do")
         countTitle:SetPoint("TOPLEFT", xCountOffset - 8, yOffset + 20)
 
         local countTitle2 = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
-        countTitle2:SetText("Session")
-        countTitle2:SetPoint("TOPLEFT", xCount2Offset - 17, yOffset + 20)
+        countTitle2:SetText("Completed")
+        countTitle2:SetPoint("TOPLEFT", xCount2Offset - 28, yOffset + 20)
 
         
+        local function GetExerciseColor(count)
+            if count >= 99 then
+                return "|cffff8000" -- Legendary (Orange)
+            elseif count >= 74 then
+                return "|cffa335ee" -- Epic (Purple)
+            elseif count >= 49 then
+                return "|cff0070dd" -- Rare (Blue)
+            elseif count >= 24 then
+                return "|cff1eff00" -- Uncommon (Green)
+            elseif count > 0 then
+                return "|cffffffff" -- Common (White)
+            else
+                return "|cff9d9d9d" -- Poor (Gray)
+            end
+        end
+
+
         for _, exercise in ipairs(exercises) do
+            count = session_exercises["s_" .. exercise.key] or 0
+        
             -- Create FontString for the exercise name
             local nameText = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
             nameText:SetPoint("TOPLEFT", xNameOffset, yOffset)
@@ -125,23 +156,23 @@ local function CreateBuffedRestingAlertFrame()
             countText:SetPoint("TOPLEFT", xCountOffset, yOffset)
             countText:SetText("|cFFFFFFFF0|r")
         
-            -- "Session" Count FontString
+            -- "Session" Count FontString with dynamic color
             local countText2 = sectionFrame:CreateFontString(nil, "OVERLAY", "GameFontHighlight")
             countText2:SetPoint("TOPLEFT", xCount2Offset, yOffset)
-            countText2:SetText(string.format("|cFFFFFFFF%d|r", session_exercises["s_" .. exercise.key] or 0))
-        
-
+            countText2:SetText(string.format("%s%d|r", color, count)) -- Add color and number dynamically
         
             -- Store references in exerciseTexts
             exerciseTexts[exercise.key] = countText
         
-            if not exerciseTexts.session then exerciseTexts.session = {} end
-        
+            if not exerciseTexts.session then 
+                exerciseTexts.session = {} 
+            end
             exerciseTexts.session[exercise.key] = countText2
         
             -- Move to the next line
             yOffset = yOffset - 20
         end
+        
         
 
         -- Buttons: "I Did It!", "Skip", "Close"
@@ -162,12 +193,13 @@ local function CreateBuffedRestingAlertFrame()
             session_exercises.s_pullups = session_exercises.s_pullups + pullups
 
             
-            -- Update the UI
-            exerciseTexts.session["pushups"]:SetText(string.format("|cFFFFFFFF%d|r", session_exercises.s_pushups))
-            exerciseTexts.session["situps"]:SetText(string.format("|cFFFFFFFF%d|r", session_exercises.s_situps))
-            exerciseTexts.session["planks"]:SetText(string.format("|cFFFFFFFF%d|r", session_exercises.s_planks))
-            exerciseTexts.session["pistolsquats"]:SetText(string.format("|cFFFFFFFF%d|r", session_exercises.s_pistolsquats))
-            exerciseTexts.session["pullups"]:SetText(string.format("|cFFFFFFFF%d|r", session_exercises.s_pullups))
+            -- Update the UI dynamically with colors
+            exerciseTexts.session["pushups"]:SetText(string.format("%s%d|r", GetExerciseColor(session_exercises.s_pushups), session_exercises.s_pushups))
+            exerciseTexts.session["situps"]:SetText(string.format("%s%d|r", GetExerciseColor(session_exercises.s_pushups), session_exercises.s_situps))
+            exerciseTexts.session["planks"]:SetText(string.format("%s%d|r", GetExerciseColor(session_exercises.s_pushups), session_exercises.s_planks))
+            exerciseTexts.session["pistolsquats"]:SetText(string.format("%s%d|r", GetExerciseColor(session_exercises.s_pushups), session_exercises.s_pistolsquats))
+            exerciseTexts.session["pullups"]:SetText(string.format("%s%d|r", GetExerciseColor(session_exercises.s_pushups), session_exercises.s_pullups))
+
 
             
             BuffedRestingFrame:UpdateResults()
@@ -624,26 +656,37 @@ if not BuffDB then
 end
 
 
--- Function to handle the "/buffed" command
 local function BuffedMenuCommandHandler(msg)
-    if msg and string.lower(msg) == "clear" then
-        
+    DEFAULT_CHAT_FRAME:AddMessage("|cFF00FFFF[Buffed]|r Debug: Command received - " .. (msg or "nil"))
 
-        -- Reset session variables as well
+    if msg and string.lower(msg) == "show" then
+        DEFAULT_CHAT_FRAME:AddMessage("|cFF00FFFF[Buffed]|r Showing the workout details frame!")
+        if not BuffedRestingFrame then
+
+            CreateBuffedRestingAlertFrame()
+        end
+
+        -- Show the frame
+        BuffedRestingFrame:Show()
+        
+    elseif msg and string.lower(msg) == "clear" then
+        -- Reset session variables
         session_exercises.s_pushups = 0
         session_exercises.s_pullups = 0
         session_exercises.s_situps = 0
         session_exercises.s_pistolsquats = 0
         session_exercises.s_planks = 0
 
+        UpdateExerciseUI()
+
         -- Print confirmation
         DEFAULT_CHAT_FRAME:AddMessage("|cFF00FFFF[Buffed]|r Total and session counts reset to 0!")
-
     else
         -- Open the Buffed options frame
         CreateBuffedFrame()
     end
 end
+
 
 -- Register the slash command
 SLASH_BUFFED1 = "/buffed"
