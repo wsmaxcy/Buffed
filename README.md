@@ -72,6 +72,7 @@ The popup provides:
 ![Buffed Workout](https://raw.githubusercontent.com/wsmaxcy/Buffed/main/screenshots/workout.png)
 
 **Completed** text changes color depending on how much **WORK** you do in your session. Can you make it to Legnedary?
+
 ---
 
 ### Shame
